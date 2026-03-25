@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Medical Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <meta name="description" content="An educational medical assistant using voice and vision for early symptom evaluation." />
+  </head>
+  <body>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle light/dark theme">
+      <span id="themeToggleLabel" class="theme-toggle__label">Theme</span>
+    </button>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand__text">
+            <div class="brand__name" style = "font-size: 30px">⚕️AI Medical Assistant</div>
+            <div class="brand__tagline" style = "font-size: 12px">Multimodal AI Medical Assistant with Voice and Vision</div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a class="nav__link" href="#features">Features</a>
+          <a class="nav__link" href="#how-it-works">How it works</a>
+          <a class="nav__link nav__cta" href="/app">Try the Assistant</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero__copy">
+            <p class="eyebrow">Educational research tool</p>
+            <h1 class="hero__title">Describe symptoms. Upload an image. Get doctor-style, educational guidance.</h1>
+            <p class="hero__subtitle">
+              AI medical assistant combines speech understanding and medical image analysis to generate a short, empathetic response.
+              It is not a clinical diagnostic tool and it cannot replace professional medical advice.
+            </p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="/app">Try the Assistant</a>
+              <a class="btn btn--ghost" href="#features">Explore features</a>
+            </div>
+          </div>
+
+          <div class="hero__panel" aria-hidden="true">
+            <div class="hero__panel-inner">
+              <div class="pill">Voice</div>
+              <div class="pill">Vision</div>
+              <div class="pill">Doctor voice output</div>
+              <div class="hero__panel-glow"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title">Features</h2>
+            <p class="section-subtitle">Responsive cards with interactive “learn more” details. Hover for subtle motion.</p>
+          </div>
+
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-card__top">
+                <div class="feature-card__icon" aria-hidden="true">🎙</div>
+                <h3 class="feature-card__title">Speech Understanding</h3>
+              </div>
+              <details class="feature-card__details">
+                <summary class="feature-card__summary">How it helps</summary>
+                <p class="feature-card__text">
+                  Your spoken symptoms are transcribed, so you can communicate naturally without typing complex medical details.
+                </p>
+              </details>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__top">
+                <div class="feature-card__icon" aria-hidden="true">📷</div>
+                <h3 class="feature-card__title">Medical Image Analysis</h3>
+              </div>
+              <details class="feature-card__details">
+                <summary class="feature-card__summary">How it helps</summary>
+                <p class="feature-card__text">
+                  Upload an image and the assistant generates a concise, medically relevant interpretation for educational purposes.
+                </p>
+              </details>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__top">
+                <div class="feature-card__icon" aria-hidden="true">🗣</div>
+                <h3 class="feature-card__title">Doctor-Style Voice Output</h3>
+              </div>
+              <details class="feature-card__details">
+                <summary class="feature-card__summary">How it helps</summary>
+                <p class="feature-card__text">
+                  Get your generated guidance as audio, making the experience more accessible and easy to review.
+                </p>
+              </details>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__top">
+                <div class="feature-card__icon" aria-hidden="true">🛡</div>
+                <h3 class="feature-card__title">Educational Guidance, Not Diagnosis</h3>
+              </div>
+              <details class="feature-card__details">
+                <summary class="feature-card__summary">Why this matters</summary>
+                <p class="feature-card__text">
+                  The assistant is designed for learning and experimentation. It provides general information and encouragement to seek professional care.
+                </p>
+              </details>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-card__top">
+                <div class="feature-card__icon" aria-hidden="true">⚡</div>
+                <h3 class="feature-card__title">Fast, Secure Workflow</h3>
+              </div>
+              <details class="feature-card__details">
+                <summary class="feature-card__summary">What you get</summary>
+                <p class="feature-card__text">
+                  The app processes your inputs through API-based services and displays the result with clear, focused outputs.
+                </p>
+              </details>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="section section--alt">
+        <div class="container">
+          <div class="section-head section-head--tight">
+            <h2 class="section-title">Why AI Medical Assistant exists</h2>
+            <p class="section-subtitle">A simple flow built for clarity, accessibility, and learning.</p>
+          </div>
+
+          <div class="steps">
+            <div class="step-card">
+              <h3 class="step-card__title">Talk and/or show</h3>
+              <p class="step-card__text">
+                Share symptoms using voice and provide a medical image for the assistant to analyze.
+              </p>
+            </div>
+            <div class="step-card">
+              <h3 class="step-card__title">Get an educational response</h3>
+              <p class="step-card__text">
+                The assistant generates a concise, doctor-style interpretation and general guidance.
+              </p>
+            </div>
+            <div class="step-card">
+              <h3 class="step-card__title">Listen and review</h3>
+              <p class="step-card__text">
+                The generated advice is provided as audio so you can revisit it comfortably.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="disclaimer">
+            <h2 class="disclaimer__title">Important Disclaimer</h2>
+            <p class="disclaimer__text">
+              AI Medical Assistant is an educational research tool and not a substitute for professional medical advice.
+              If you have a medical emergency, contact your local emergency services immediately.
+            </p>
+          </div>
+
+          <footer class="footer">
+            <div class="footer__left">Built with Gradio + voice and vision AI.</div>
+            <div class="footer__right">
+              <a href="/app" class="footer__link">Open the Assistant</a>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/theme.js"></script>
+  </body>
+</html>
+

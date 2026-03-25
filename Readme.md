@@ -76,15 +76,7 @@ python gradio_app.py
 
 Access in browser → http://127.0.0.1:7860
 ```
-📂 Folder Structure
-├─ gradio_app.py           # Main application
-├─ brain_of_the_doctor.py  # Vision model logic
-├─ voice_of_the_patient.py # Speech recognition
-├─ voice_of_the_doctor.py  # TTS output
-├─ requirements.txt
-├─ Dockerfile
-└─ .env.example
-```
+
 ⚠️ Disclaimer
 
 This system is not approved for clinical or emergency medical use.

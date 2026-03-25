@@ -66,6 +66,49 @@ def process_inputs(audio_filepath, image_upload, image_webcam, image_clipboard, 
         return "❌ Error transcribing audio", f"Error: {str(e)}", None
 
 
+# Theme sync: apply the saved theme (or system preference) by toggling `html.dark`.
+# This keeps the assistant UI in sync with the landing page's theme preference.
+THEME_SYNC_SCRIPT = """
+<script>
+(function () {
+  const THEME_KEY = "theme";
+  const root = document.documentElement;
+
+  const stored = window.localStorage.getItem(THEME_KEY);
+  const theme =
+    stored === "light" || stored === "dark"
+      ? stored
+      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+  root.classList.toggle("dark", theme === "dark");
+
+  // Optional toggle button (top-right) for the assistant UI.
+  const btn = document.getElementById("gradioThemeToggle");
+  if (!btn) return;
+
+  function updateLabel() {
+    btn.textContent = root.classList.contains("dark") ? "Light" : "Dark";
+  }
+
+  updateLabel();
+
+  btn.addEventListener("click", function () {
+    const next = root.classList.contains("dark") ? "light" : "dark";
+    window.localStorage.setItem(THEME_KEY, next);
+    root.classList.toggle("dark", next === "dark");
+    updateLabel();
+  });
+})();
+</script>
+"""
+
+THEME_TOGGLE_HTML = """
+<div id="gradio-theme-toggle-wrapper">
+  <button id="gradioThemeToggle" type="button">Switch to Dark</button>
+</div>
+"""
+
+
 # Use Blocks with enhanced UI
 with gr.Blocks(
     title="AI Doctor",
@@ -73,11 +116,52 @@ with gr.Blocks(
     css="""
         .gradio-container {max-width: 1400px !important}
         h1 {text-align: center;}
-        """
+
+        html.dark {
+          color-scheme: dark;
+        }
+        html.dark body {
+          background: #060a14 !important;
+          color: #e5e7eb !important;
+        }
+        html.dark .gradio-container {
+          background: transparent !important;
+          color: #e5e7eb !important;
+        }
+        html.dark .prose, html.dark .markdown-body {
+          color: #e5e7eb !important;
+        }
+
+        #gradio-theme-toggle-wrapper {
+          position: fixed;
+          top: 14px;
+          right: 14px;
+          z-index: 9999;
+        }
+        #gradioThemeToggle {
+          cursor: pointer;
+          border-radius: 12px;
+          border: 1px solid rgba(229, 231, 235, 0.14);
+          background: rgba(255, 255, 255, 0.92);
+          color: #0f172a;
+          padding: 10px 12px;
+          font-weight: 800;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+          backdrop-filter: blur(10px);
+        }
+        html.dark #gradioThemeToggle {
+          border-color: rgba(229, 231, 235, 0.14);
+          background: rgba(11, 18, 32, 0.85);
+          color: #e5e7eb;
+          box-shadow: 0 12px 34px rgba(0,0,0,0.55);
+        }
+    """
 ) as demo:
     
-    gr.Markdown("#AI Doctor with Vision and Voice")
-    gr.Markdown("### Record your symptoms and provide a medical image for AI-powered diagnosis")
+    gr.HTML(THEME_TOGGLE_HTML + THEME_SYNC_SCRIPT)
+    gr.Markdown("<h1 style='text-align:center;'>⚕️ AI Doctor with Vision and Voice</h1>")
+    gr.Markdown("---")
+    gr.Markdown("<h3>🎤 Record your symptoms and provide a medical image for AI-powered diagnosis</h3>")
     
     with gr.Row():
         with gr.Column(scale=1):
@@ -153,11 +237,5 @@ with gr.Blocks(
     clear_btn.add([audio_input, image_upload, image_webcam, image_clipboard, 
                    transcription_output, diagnosis_output, audio_output])
 
-
-if __name__ == "__main__":
-    demo.launch(
-        server_name="127.0.0.1",
-        server_port=7860,
-        quiet=False,  # Show startup info
-        show_error=True
-    )
+# Note: `demo.launch()` is intentionally omitted so this Gradio app can be mounted
+# under FastAPI by `server.py` at `/app`.
