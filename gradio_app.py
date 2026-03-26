@@ -10,17 +10,17 @@ from brain_of_the_doctor import encode_image, analyze_image_with_query
 from voice_of_the_patient import transcribe_with_groq
 from voice_of_the_doctor import text_to_speech_with_elevenlabs
 
-system_prompt="""You are to respond as a professional and experienced medical doctor. I understand you are not an actual physician, but this is for educational and learning purposes only. Carefully analyze the given image and provide a concise medical interpretation. If you notice any abnormal findings, describe them professionally and state what condition or concern they may suggest. Formulate a brief differential diagnosis if applicable, and offer general remedial or management advice relevant to those possibilities. Do not use any numbers, bullet points, or special characters. Your entire response should be written as a single, natural paragraph that sounds like a doctor speaking directly to a patient. Avoid phrases like "In the image I see" or "As an AI model"; instead, begin naturally with phrases such as "With what I observe, I think you may have…". Keep the answer short, empathetic, and medically precise, not exceeding two sentences."""
+system_prompt="""You are to respond as a professional and experienced medical doctor. I understand you are not an actual physician, but this is for educational and learning purposes only. Carefully analyze the given image and provide a concise medical interpretation. If you notice any abnormal findings, describe them professionally and state what condition or concern they may suggest. Formulate a brief differential diagnosis if applicable, and offer general remedial or management advice relevant to those possibilities. Do not use any numbers, bullet points, or special characters. Your entire response should be written as a single, natural paragraph that sounds like a doctor speaking directly to a patient. Avoid phrases like “In the image I see” or “As an AI model”; instead, begin naturally with phrases such as “With what I observe, I think you may have…”. Keep the answer short, empathetic, and medically precise, not exceeding two sentences."""
 
 
-def process_inputs(audio_filepath, image_upload, image_webcam, progress=gr.Progress()):
+def process_inputs(audio_filepath, image_upload, image_webcam, image_clipboard, progress=gr.Progress()):
     """Process audio and image inputs with progress tracking"""
     
     if not audio_filepath:
         return "⚠️ No audio recorded", "Please record your voice first", None
     
     # Use whichever image source was provided
-    image_filepath = image_upload or image_webcam
+    image_filepath = image_upload or image_webcam or image_clipboard
     
     try:
         progress(0.1, desc="Processing audio...")
@@ -72,6 +72,7 @@ def process_inputs(audio_filepath, image_upload, image_webcam, progress=gr.Progr
 
 
 # Theme sync: apply the saved theme (or system preference) by toggling `html.dark`.
+# This keeps the assistant UI in sync with the landing page's theme preference.
 THEME_SYNC_SCRIPT = """
 <script>
 (function () {
@@ -86,6 +87,7 @@ THEME_SYNC_SCRIPT = """
 
   root.classList.toggle("dark", theme === "dark");
 
+  // Optional toggle button (top-right) for the assistant UI.
   const btn = document.getElementById("gradioThemeToggle");
   if (!btn) return;
 
@@ -162,14 +164,13 @@ with gr.Blocks(
 ) as demo:
     
     gr.HTML(THEME_TOGGLE_HTML + THEME_SYNC_SCRIPT)
-    gr.Markdown("<h1 style='text-align:center;'>⚕️ AI Doctor with Vision and Voice</h1>")
+    gr.Markdown("<h1 style='text-align:center;'>⚕️ AI Medical Assistant</h1>")
     gr.Markdown("---")
     gr.Markdown("<h3>🎤 Record your symptoms and provide a medical image for AI-powered diagnosis</h3>")
     
     with gr.Row():
         with gr.Column(scale=1):
             # Audio input
-            # FIX: removed deprecated `show_download_button` argument (Gradio 6.x)
             audio_input = gr.Audio(
                 sources=["microphone", "upload"],
                 type="filepath",
@@ -188,7 +189,6 @@ with gr.Blocks(
                     )
                 
                 with gr.Tab("Webcam"):
-                    # FIX: removed deprecated `mirror_webcam` argument (Gradio 6.x)
                     image_webcam = gr.Image(
                         sources=["webcam"],
                         type="filepath",
@@ -196,21 +196,17 @@ with gr.Blocks(
                         height=250
                     )
                 
-                # FIX: removed "Paste / Clipboard" tab entirely —
-                # sources=["clipboard"] was removed in Gradio 6.x.
-                # The function signature and image_filepath logic are updated accordingly.
+                with gr.Tab("Paste"):
+                    image_clipboard = gr.Image(
+                        sources=["clipboard"],
+                        type="filepath",
+                        label="Paste image (Ctrl+V)",
+                        height=250
+                    )
             
             with gr.Row():
-                # FIX: pass components= directly in constructor instead of calling .add() after
-                # (the post-construction .add() API was changed in Gradio 6.x)
                 submit_btn = gr.Button("🩺 Get Diagnosis", variant="primary", size="lg", scale=2)
-                clear_btn = gr.ClearButton(
-                    components=[],  # will be populated below after all outputs are defined
-                    value="🔄 Clear All",
-                    variant="secondary",
-                    size="lg",
-                    scale=1
-                )
+                clear_btn = gr.ClearButton(value="🔄 Clear All", variant="secondary", size="lg", scale=1)
         
         with gr.Column(scale=1):
             transcription_output = gr.Textbox(
@@ -220,32 +216,29 @@ with gr.Blocks(
                 placeholder="Your transcribed speech will appear here..."
             )
             diagnosis_output = gr.Textbox(
-                label="👨‍⚕️ Doctor's Diagnosis",
+                label="👨‍⚕️ AI medical assistant Diagnosis",
                 lines=7,
                 interactive=False,
-                placeholder="AI doctor's diagnosis will appear here..."
+                placeholder="AI medical assistant's diagnosis will appear here..."
             )
-            # FIX: removed deprecated `show_download_button` argument (Gradio 6.x)
             audio_output = gr.Audio(
-                label="🔊 Doctor's Voice Response",
-                autoplay=True
+                label="🔊 AI medical assistant Voice Response",
+                autoplay=True,
+                show_download_button=True
             )
     
     gr.Markdown("---")
     gr.Markdown("⚠️ **Disclaimer:** This is an AI-powered educational tool and not a substitute for professional medical advice.")
     
-    # Wire up clear button to all components
-    clear_btn.add([
-        audio_input, image_upload, image_webcam,
-        transcription_output, diagnosis_output, audio_output
-    ])
-
-    # Connect submit button
+    # Connect buttons
     submit_btn.click(
         fn=process_inputs,
-        inputs=[audio_input, image_upload, image_webcam],
+        inputs=[audio_input, image_upload, image_webcam, image_clipboard],
         outputs=[transcription_output, diagnosis_output, audio_output]
     )
+    
+    clear_btn.add([audio_input, image_upload, image_webcam, image_clipboard, 
+                   transcription_output, diagnosis_output, audio_output])
 
 # Note: `demo.launch()` is intentionally omitted so this Gradio app can be mounted
 # under FastAPI by `server.py` at `/app`.
