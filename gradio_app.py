@@ -174,8 +174,7 @@ with gr.Blocks(
             audio_input = gr.Audio(
                 sources=["microphone", "upload"],
                 type="filepath",
-                label="🎤 Record Your Symptoms",
-                show_download_button=True
+                label="🎤 Record Your Symptoms"
             )
             
             # Image tabs
