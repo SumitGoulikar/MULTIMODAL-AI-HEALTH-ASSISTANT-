@@ -1,105 +1,116 @@
-# Multimodal AI Health Assistant
+# ⚕️ AI Medical Assistant (Voice + Vision)
 
-A smart healthcare assistant combining **voice**, **vision**, and **AI-driven medical analysis** to support early symptom evaluation and accessibility in remote environments.
+AI-powered medical assistant that understands **speech, images, and text** to provide quick health insights.
 
 ---
 
 ## 🚀 Overview
 
-This application enables users to:
-- Speak about their symptoms using a microphone
-- Upload medical images such as skin photos or X-rays
-- Receive AI-generated insights and audio responses in real time
+An intelligent system that allows users to:
 
-Designed as an **educational research project** in healthcare AI — not a clinical diagnostic tool.
-
----
-
-## 🧠 Core Capabilities
-- **Speech Understanding** – Whisper-based speech recognition
-- **Medical Image Analysis** – Llama Vision model for image insights
-- **Natural Speech Output** – ElevenLabs / gTTS voice generation
-- **Intuitive UI** – Built with Gradio for a smooth experience
-- **Fast & Secure** – API-based processing with local privacy handling
+* 🎤 Speak symptoms
+* 📸 Upload medical images
+* 🧠 Get AI-based analysis
+* 🔊 Receive voice explanation
 
 ---
 
-## 🛠 Tech Stack
+## 💡 Key Features
 
-| Component | Technology |
-|----------|------------|
-| UI | Gradio |
-| Backend | Python 3.11+ |
-| Speech-to-Text | Groq Whisper |
-| Vision Model | Meta Llama Scout |
-| Text-to-Speech | ElevenLabs + gTTS |
-| Media Processing | FFmpeg |
+* 🎤 **Speech-to-Text** (Groq Whisper)
+* 👁️ **Vision AI** (Llama models for image analysis)
+* 🔊 **Text-to-Speech** (ElevenLabs / gTTS fallback)
+* ⚡ **Fast Response (~3–5 sec)**
+* 🌐 **Multi-input support** (mic, upload, webcam)
+* 🔒 **Secure & Private (no data storage)**
+* 💻 **Cross-platform UI (Gradio + Web UI)**
 
 ---
 
-## 📦 Project Setup
+## 🛠️ Tech Stack
 
-### 1️⃣ Clone Repository
+* **Frontend:** Gradio + HTML/CSS
+* **Backend:** FastAPI + Python
+* **AI Models:** Whisper (STT), Llama Vision
+* **Audio:** FFmpeg, PyDub
+* **TTS:** ElevenLabs / gTTS
+
+---
+
+## 🆕 Recent Updates
+
+* ✅ Integrated **FastAPI + Gradio mounting**
+* ✅ Added **dynamic port handling (fix for port 7860 error)**
+* ✅ Improved **server logging & debugging**
+* ✅ Enhanced **UI structure and frontend fixes**
+
+---
+
+## ⭐ Clone Repository
 ```bash
 git clone https://github.com/SumitGoulikar/MULTIMODAL-AI-HEALTH-ASSISTANT-.git
 cd MULTIMODAL-AI-HEALTH-ASSISTANT-
 ```
 
-2️⃣ Install Dependencies
+## 🚀 Run Locally
+
 ```bash
+# Install dependencies
 pip install -r requirements.txt
-```
-3️⃣ Configure Environment Variables
-```bash
-cp .env.example .env
-```
 
-Add your API keys:
-```
-GROQ_API_KEY=your_key_here
-ELEVENLABS_API_KEY=your_key_here   # Optional
-```
-4️⃣ Install FFmpeg
-```
-Windows: choco install ffmpeg
-```
-```
-macOS: brew install ffmpeg
-```
-```
-Linux: sudo apt install ffmpeg
-```
-5️⃣ Run Application
-```
-python gradio_app.py
+# Run server
+python server.py
 ```
 
-Access in browser → http://127.0.0.1:7860
+👉 Open: http://127.0.0.1:7860
+
+---
+
+## 📂 Project Structure
+
+```
+ai-doctor/
+├── server.py                 # FastAPI server
+├── gradio_app.py             # Gradio UI
+├─ brain_of_the_doctor.py     # Vision model logic
+├── voice_of_the_doctor.py    # TTS output
+├── voice_of_the_patient.py   # Speech recognition
+├── frontend/                 # Landing page
+├── assets/                   # Static files
+├── requirements.txt
+└── .env
 ```
 
-⚠️ Disclaimer
+---
 
-This system is not approved for clinical or emergency medical use.
-It is intended only for learning, experimentation, and research.
+## 🔑 API Setup
 
-Always consult a licensed healthcare professional for medical concerns.
+Create `.env` file:
 
-🤝 Contributing
+```
+GROQ_API_KEY=your_key
+ELEVENLABS_API_KEY=your_key
+```
 
-Contributions are welcome!
-Feel free to:
+---
 
-Open issues
+## ⚠️ Disclaimer
 
-Submit pull requests
+* Not a replacement for medical professionals
+* For **educational use only**
+* Always consult a doctor for real diagnosis
 
-Suggest enhancements
+---
 
-📬 Contact
+## 🤝 Contributing
 
-Developer: Sumit Goulikar
-Email: sumithgoulikar2004@gmail.com
+Pull requests are welcome. For major changes, open an issue first.
 
-GitHub: https://github.com/SumitGoulikar
+---
 
-If this project helps you, please ⭐ star the repository to support it!
+## 📧 Contact
+
+* GitHub: https://github.com/SumitGoulikar
+* Email: [sumithgoulikar2004@gmail.com](mailto:sumithgoulikar2004@gmail.com)
+
+---
