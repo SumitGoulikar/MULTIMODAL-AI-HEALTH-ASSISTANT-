@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-import socket
+import os
 
 import gradio as gr
 import uvicorn
@@ -39,47 +39,8 @@ mount_gradio_app(app, demo, path="/app")
 
 
 if __name__ == "__main__":
-    host = "127.0.0.1"
-    desired_port = 7860
-
-    def _find_free_port(start_port: int, max_tries: int = 50) -> int:
-        """Pick the first available TCP port on localhost."""
-        for p in range(start_port, start_port + max_tries):
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            try:
-                s.bind((host, p))
-                s.listen(1)
-                return p
-            except OSError:
-                continue
-            finally:
-                try:
-                    s.close()
-                except Exception:
-                    pass
-        raise RuntimeError(f"No free port found in range {start_port}..{start_port + max_tries - 1}")
-
-    # Pre-check whether the port is already bound; this helps pinpoint EADDRINUSE.
-    port_in_use = False
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.bind((host, desired_port))
-        sock.listen(1)
-    except OSError as e:
-        port_in_use = True
-    finally:
-        try:
-            sock.close()
-        except Exception:
-            pass
-
-    port = desired_port
-    if port_in_use:
-        # If 7860 is taken, choose another port so the app can still start.
-        port = _find_free_port(desired_port + 1, max_tries=50)
-
-    try:
-        uvicorn.run(app, host=host, port=port, reload=False)
-    except OSError as e:
-        raise
+    # Render expects services to listen on `0.0.0.0` and the injected `PORT` env var.
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", "7860"))
+    uvicorn.run(app, host=host, port=port, reload=False)
 

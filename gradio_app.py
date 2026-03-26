@@ -2,6 +2,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 import os
+import uuid
+from pathlib import Path
 import gradio as gr
 
 from brain_of_the_doctor import encode_image, analyze_image_with_query
@@ -50,9 +52,12 @@ def process_inputs(audio_filepath, image_upload, image_webcam, image_clipboard, 
         print(f"✓ Diagnosis complete")
 
         # Generate voice
+        audio_dir = Path(__file__).resolve().parent / "generated_audio"
+        audio_dir.mkdir(parents=True, exist_ok=True)
+        output_filepath = str(audio_dir / f"{uuid.uuid4().hex}.mp3")
         voice_of_doctor = text_to_speech_with_elevenlabs(
             input_text=doctor_response, 
-            output_filepath="final.mp3"
+            output_filepath=output_filepath,
         )
         
         progress(1.0, desc="Done!")

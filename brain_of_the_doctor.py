@@ -27,7 +27,9 @@ model="meta-llama/llama-4-scout-17b-16e-instruct"
 #model="llama-3.2-90b-vision-preview" #Deprecated
 
 def analyze_image_with_query(query, model, encoded_image):
-    client=Groq()  
+    if not GROQ_API_KEY:
+        raise ValueError("GROQ_API_KEY is not set. Please set the GROQ_API_KEY environment variable.")
+    client = Groq(api_key=GROQ_API_KEY)
     messages=[
         {
             "role": "user",
