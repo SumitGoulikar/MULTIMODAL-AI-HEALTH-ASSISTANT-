@@ -223,8 +223,7 @@ with gr.Blocks(
             )
             audio_output = gr.Audio(
                 label="🔊 AI medical assistant Voice Response",
-                autoplay=True,
-                show_download_button=True
+                autoplay=True
             )
     
     gr.Markdown("---")
