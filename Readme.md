@@ -6,7 +6,7 @@ AI-powered medical assistant that understands **speech, images, and text** to pr
 
 ## 🌐 Live Demo
 
-👉 https://multimodal-ai-health-assistant-2.onrender.com/app
+👉 https://multimodal-ai-health-assistant-2.onrender.com
 
 ---
 
